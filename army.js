@@ -99,7 +99,8 @@ function addArmyItem(army, item) {
 }
 
 function removeArmyCommander(army, commander) {
-    army.commanders.splice(army.commanders.findIndex(e => e == commander), 1);
+    const index = army.commanders.findIndex(e => e == commander);
+    if(index >= 0) army.commanders.splice(index, 1);
 }
 
 // just inverts argument count if necessary and calls addArmyUnit
