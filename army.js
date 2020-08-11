@@ -72,7 +72,12 @@ function newArmy(nation = 5) {
         items: [],
 
         setNation,
-        addCommander
+        addCommander,
+        removeCommander,
+        addUnit,
+        removeUnit,
+        addItem,
+        removeItem
     };
 }
 
@@ -124,3 +129,14 @@ function removeArmyItem(army, item) {
 }
 
 
+module.exports = {
+    blankArmy,
+    newArmy,
+    setArmyNation,
+    addArmyCommander,
+    removeArmyCommander,
+    addArmyUnit,
+    removeArmyUnit,
+    addArmyItem,
+    removeArmyItem
+};
