@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>DOM5 BATTLER</title>
+  </head>
+  <body>
+    <h1>Dominions 5 Battler</h1>
+
+    <div class="left-half">
+      <article>
+
+        <h1>ARMY 1</h1>
+
+        <select name="comm1" id="comm1">
+          <!-- these need to be generated from data-->
+          <option value="Commander">Commander</option>
+          <option value="Dryad">Dryad</option>
+          <option value="Mounted Commander">Mounted Commander</option>
+          <option value="Priest">Priest</option>
+        </select>
+        <button type="button">Add Commander</button> 
+
+        
+        <select name="units1" id="units1">
+          <!-- these need to be generated from data-->
+          <option value="Heavy Infantry">Heavy Infantry</option>
+          <option value="Longbowman">Longbowman</option>
+          <option value="Heavy Cavalry">Heavy Cavalry</option>
+          <option value="Archer">Archer</option>
+        </select>
+        <button type="button">Add Unit</button> 
+
+      </article>
+    </div>
+    <div class="right-half">
+      <article>
+        
+        <h1>ARMY 2</h1>
+
+        <select name="comm2" id="comm2">
+          <!-- these need to be generated from data-->
+          <option value="Commander">Commander</option>
+          <option value="Dryad">Dryad</option>
+          <option value="Mounted Commander">Mounted Commander</option>
+          <option value="Priest">Priest</option>
+        </select>
+        <button type="button">Add Commander</button> 
+
+
+        <select name="units2" id="units2">
+          <!-- these need to be generated from data-->
+          <option value="Heavy Infantry">Heavy Infantry</option>
+          <option value="Longbowman">Longbowman</option>
+          <option value="Heavy Cavalry">Heavy Cavalry</option>
+          <option value="Archer">Archer</option>
+        </select>
+        <button type="button">Add Unit</button> 
+
+    </div>
+    </article>
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+  </body>
+</html>
