@@ -45,16 +45,24 @@ function newArmy(nation = 5) {
         addArmyCommander(this, commander);
     }
 
+    function removeCommander(commander) {
+        removeArmyCommander(this, commander);
+    }
+
     function addUnit(unit) {
         addArmyUnit(this, unit);
+    }
+
+    function removeUnit(unit) {
+        removeArmyUnit(this, unit);
     }
 
     function addItem(item) {
         addArmyItem(this, item);
     }
 
-    function removeArmyCommander(commander) {
-        removeArmyCommander(this, commander);
+    function removeItem(item) {
+        removeArmyItem(this, item);
     }
     
     return {
@@ -76,6 +84,11 @@ function addArmyCommander(army, commander) {
     army.commanders.push(commander);
 }
 
+function removeArmyCommander(army, commander) {
+    const index = army.commanders.findIndex(e => e == commander);
+    if(index >= 0) army.commanders.splice(index, 1);
+}
+
 function addArmyUnit(army, unit) {
 
     const sameType = (u) => u.type === unit.type;
@@ -94,18 +107,20 @@ function addArmyUnit(army, unit) {
     }
 }
 
-function addArmyItem(army, item) {
-    army.items.push(item);
-}
-
-function removeArmyCommander(army, commander) {
-    const index = army.commanders.findIndex(e => e == commander);
-    if(index >= 0) army.commanders.splice(index, 1);
-}
-
 // just inverts argument count if necessary and calls addArmyUnit
 function removeArmyUnit(army, unit) {
     const {type, count} = unit;
     const remUnit = count < 0 ? count : 0 - count;
     addArmyUnit(army, {type, count: remUnit});
 }
+
+function addArmyItem(army, item) {
+    army.items.push(item);
+}
+
+function removeArmyItem(army, item) {
+    const index = army.items.findIndex(e => e == item);
+    if(index >= 0) army.items.splice(index, 1);
+}
+
+
