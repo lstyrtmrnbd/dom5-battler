@@ -85,7 +85,7 @@ function addArmyUnit(army, unit) {
         const total = found.count + unit.count;
 
         if(total <= 0) {
-            army.units.splice(army.units.findIndex(sameType));
+            army.units.splice(army.units.findIndex(sameType), 1);
         } else {
             found.count = total;
         }
@@ -99,9 +99,12 @@ function addArmyItem(army, item) {
 }
 
 function removeArmyCommander(army, commander) {
-    army.commanders.splice(army.commanders.findIndex(e => e == commander));
+    army.commanders.splice(army.commanders.findIndex(e => e == commander), 1);
 }
 
+// just inverts argument count if necessary and calls addArmyUnit
 function removeArmyUnit(army, unit) {
-    
+    const {type, count} = unit;
+    const remUnit = count < 0 ? count : 0 - count;
+    addArmyUnit(army, {type, count: remUnit});
 }
