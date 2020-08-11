@@ -1,6 +1,11 @@
 const fs = require('fs');
 
-//// File Output
+/*****
+ * BATTLER
+ * - responsible for writing the battle map
+ * - does so by interpreting army structures into output strings
+ *   and embedding them into a template map
+ */
 
 const TEMPLATE_LOC = __dirname + '/template.map';
 const TEMPLATE_MARKER = '---TEMPLATE-MARKER---';
@@ -24,9 +29,10 @@ function generateFilename(nation1, nation2) {
     return `${process.cwd()}/${prefix}_${nation1}_vs_${nation2}_${Date.now()}.map`;
 }
 
-
-/// Map specific constants
-//  - could wrap writeOut in higher func to capture
+/// Map constants
+//  - these are specific to the template.map file
+//  - could wrap writeOut in higher func to capture,
+//    if it's necessary to generalize templates
 const LAND1 = 5;
 const LAND2 = 8;
 
@@ -41,18 +47,14 @@ function armyOut(army, land_no) {
                       army.commanders.map(commanderOut), // what if these fields are empty?
                       army.units.map(unitOut),
                       army.items.map(itemOut))
-        .reduce(concatter, ''); // array of strings reduced to single string
+        .reduce(concatter, ''); // array of strings reduced to single output string
 }
 
 function concatter(a,c) {
     return a.concat(c);
 }
 
-/**
- * Returns concat of all args
- * arg1: single value
- * further arguments: 1D arrays
- */
+// flattens all args after and except for arg1 and returns a 1D array
 function concatOuts(arg1) {
     const rest = [...arguments].slice(1);
     return rest.reduce(concatter, [arg1]); // flatten rest
@@ -80,34 +82,6 @@ function itemOut(item) {
     return `#additem ${item}\n`;
 }
 
-/** 
- *  "army" is a nation with commanders, units, and items
- */
-const ARMY_EXAMPLE = {
-    nation: 'nat_id',
-    commanders: [
-        'com_id', 'com_id2'  
-    ],
-    units: [
-        {
-            type: 'u_id',
-            count: 666
-        },
-        {
-            type: 'u_id2',
-            count: 777
-        }
-    ],
-    items: [
-        'it_id', 'it_id2'
-    ]
+module.exports = {
+    writeOut
 };
-
-function newArmy(nation) {
-    return {
-        nation,
-        commanders: [],
-        units: [],
-        items: []
-    };
-}
