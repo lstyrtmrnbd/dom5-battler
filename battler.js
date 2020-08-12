@@ -7,26 +7,34 @@ const fs = require('fs');
  *   and embedding them into a template map
  */
 
+const DOM5_DIR = '/home/skinner/.dominions5/';
+
 const TEMPLATE_LOC = __dirname + '/template.map';
 const TEMPLATE_MARKER = '---TEMPLATE-MARKER---';
+const NAME_MARKER = '---TEMPLATE-NAME---';
 
 // load template from file, sub in output, write to file
 function writeOut(army1, army2) {
 
+    const name = generateBattleName(army1.nation, army2.nation);
+    
     const template = fs.readFileSync(TEMPLATE_LOC, {encoding:'utf8'});
-
+    
     const subString = generateOutput(army1, army2);
-    const outString = template.replace(TEMPLATE_MARKER, subString);
+    const outString = template.replace(TEMPLATE_MARKER, subString)
+          .replace(NAME_MARKER, name);
 
-    const filename = generateFilename(army1.nation, army2.nation);    
-    fs.writeFileSync(filename, outString);
+    const filename = name + '.map';
+
+    fs.writeFileSync(`${process.cwd()}/` + filename, outString);
+    fs.writeFileSync(DOM5_DIR + 'maps/battler/' + filename, outString);
 }
 
-function generateFilename(nation1, nation2) {
+function generateBattleName(nation1, nation2) {
 
     const prefix = 'BATTLER';
     
-    return `${process.cwd()}/${prefix}_${nation1}_vs_${nation2}_${Date.now()}.map`;
+    return `${prefix}_${nation1}_vs_${nation2}_${Date.now()}`;
 }
 
 /// Map constants
