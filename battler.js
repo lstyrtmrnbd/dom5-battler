@@ -44,9 +44,7 @@ function generateOutput(army1, army2) {
 function armyOut(army, land_no) {
 
     return concatOuts(nationOut(army.nation, land_no),
-                      army.commanders.map(commanderOut), // what if these fields are empty?
-                      army.units.map(unitOut),
-                      army.items.map(itemOut))
+                      army.commanders.map(commanderOut)) // what if it's empty?
         .reduce(concatter, ''); // array of strings reduced to single output string
 }
 
@@ -54,14 +52,15 @@ function concatter(a,c) {
     return a.concat(c);
 }
 
-// flattens all args after and except for arg1 and returns a 1D array
+// arg1 is added to an array
+// all following arguments are flattened 1 level into the same array
 function concatOuts(arg1) {
     const rest = [...arguments].slice(1);
-    return rest.reduce(concatter, [arg1]); // flatten rest
+    return rest.reduce(concatter, [arg1]);
 }
 
 // nation and land data are tied together by the 'specstart' directive
-// - necessary?
+// - necessary? yes, but set_land can be pulled out
 function nationOut(nation_id, land_no) {
     return `
 #allowedplayer ${nation_id}
@@ -71,7 +70,10 @@ function nationOut(nation_id, land_no) {
 }
 
 function commanderOut(commander) {
-    return `#commander ${commander}\n`;
+    return concatOuts(`#commander ${commander.type}\n`,
+                      commander.units.map(unitOut),
+                      commander.items.map(itemOut))
+        .reduce(concatter, '');
 }
 
 function unitOut(unit) {
@@ -83,5 +85,6 @@ function itemOut(item) {
 }
 
 module.exports = {
-    writeOut
+    writeOut,
+    armyOut
 };

@@ -1,7 +1,7 @@
-/**** 
- * Army is a nation with commanders
- * Commanders are their type, units, items, and magic
- */
+const uuid = require('uuid').v4;
+
+//// Structure Examples
+
 const UNIT_EXAMPLE = {
     type: 66,
     count: 77
@@ -29,14 +29,14 @@ const ARMY_EXAMPLE = {
     commanders: [COMMANDER_EXAMPLE]
 };
 
+//// Primary functionality
+
 // creates essential Army structure, defaults to Archo
 function blankArmy(nation = 5) {
     
     return {
         nation,
-        commanders: [],
-        units: [],
-        items: []
+        commanders: []
     };
 }
 
@@ -84,10 +84,11 @@ function newCommander(type = 238) {
     }
 
     return {
+        id: uuid(),
         type,
         units: [],
         items: [],
-        magic: {},
+        magic: newMagic(),
         
         addUnit,
         removeUnit,
@@ -96,16 +97,35 @@ function newCommander(type = 238) {
     };
 }
 
+//// Implementation and raw fns
+
+function newMagic() {
+    return {
+        F:0,
+        A:0,
+        W:0,
+        E:0,
+        S:0,
+        D:0,
+        N:0,
+        B:0
+    };
+}
+
 function setArmyNation(army, nation) {
     army.nation = nation;
 }
-///////////////vvvvvvvv FIX
+
 function addArmyCommander(army, commander) {
     army.commanders.push(commander);
 }
-///////////////vvvvvvvv FIX
-function removeArmyCommander(army, commander) {
-    const index = army.commanders.findIndex(e => e == commander);
+
+function addArmyCommanderByType(army, type) {
+    army.commanders.push(newCommander(type));
+}
+
+function removeArmyCommander(army, id) {
+    const index = army.commanders.findIndex(c => c.id === id);
     if(index >= 0) army.commanders.splice(index, 1);
 }
 
@@ -127,7 +147,7 @@ function addCommanderUnit(commander, unit) {
     }
 }
 
-// just inverts argument count if necessary and calls addCommanderUnit
+// inverts argument count if necessary and calls addCommanderUnit
 function removeCommanderUnit(commander, unit) {
     const {type, count} = unit;
     const remUnit = count < 0 ? count : 0 - count;
@@ -148,6 +168,7 @@ module.exports = {
     newArmy,
     setArmyNation,
     addArmyCommander,
+    addArmyCommanderByType,
     removeArmyCommander,
     addCommanderUnit,
     removeCommanderUnit,
