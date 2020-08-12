@@ -1,26 +1,32 @@
 /**** 
- * ARMY is a nation with commanders, units, and items
- * - two implementations, simple struct and common functions
- *   or object with associated methods
+ * Army is a nation with commanders
+ * Commanders are their type, units, items, and magic
  */
+const UNIT_EXAMPLE = {
+    type: 66,
+    count: 77
+};
+
+const COMMANDER_EXAMPLE = {
+    type: 238, // Pan
+    xp: 0,
+    units: [UNIT_EXAMPLE],
+    items: ["Vine Shield", "Frostbrand"],
+    magic: {
+        F:0,
+        A:0,
+        W:0,
+        E:0,
+        S:0,
+        D:0,
+        N:0,
+        B:0
+    }
+};
+
 const ARMY_EXAMPLE = {
     nation: 'nat_id',
-    commanders: [
-        'com_id', 'com_id2'  
-    ],
-    units: [
-        {
-            type: 'u_id',
-            count: 666
-        },
-        {
-            type: 'u_id2',
-            count: 777
-        }
-    ],
-    items: [
-        'it_id', 'it_id2'
-    ]
+    commanders: [COMMANDER_EXAMPLE]
 };
 
 // creates essential Army structure, defaults to Archo
@@ -48,86 +54,94 @@ function newArmy(nation = 5) {
     function removeCommander(commander) {
         removeArmyCommander(this, commander);
     }
-
-    function addUnit(unit) {
-        addArmyUnit(this, unit);
-    }
-
-    function removeUnit(unit) {
-        removeArmyUnit(this, unit);
-    }
-
-    function addItem(item) {
-        addArmyItem(this, item);
-    }
-
-    function removeItem(item) {
-        removeArmyItem(this, item);
-    }
     
     return {
         nation,
         commanders: [],
-        units: [],
-        items: [],
 
         setNation,
         addCommander,
-        removeCommander,
+        removeCommander
+    };
+}
+
+function newCommander(type = 238) {
+
+    function addUnit(unit) {
+        addCommanderUnit(this, unit);
+    }
+
+    function removeUnit(unit) {
+        removeCommanderUnit(this, unit);
+    }
+
+    function addItem(item) {
+        addCommanderItem(this, item);
+    }
+
+    function removeItem(item) {
+        removeCommanderItem(this, item);
+    }
+
+    return {
+        type,
+        units: [],
+        items: [],
+        magic: {},
+        
         addUnit,
         removeUnit,
         addItem,
-        removeItem
+        removeItem  
     };
 }
 
 function setArmyNation(army, nation) {
     army.nation = nation;
 }
-
+///////////////vvvvvvvv FIX
 function addArmyCommander(army, commander) {
     army.commanders.push(commander);
 }
-
+///////////////vvvvvvvv FIX
 function removeArmyCommander(army, commander) {
     const index = army.commanders.findIndex(e => e == commander);
     if(index >= 0) army.commanders.splice(index, 1);
 }
 
-function addArmyUnit(army, unit) {
+function addCommanderUnit(commander, unit) {
 
     const sameType = (u) => u.type === unit.type;
-    const found = army.units.find(sameType);
+    const found = commander.units.find(sameType);
     
     if(found){
         const total = found.count + unit.count;
 
         if(total <= 0) {
-            army.units.splice(army.units.findIndex(sameType), 1);
+            commander.units.splice(commander.units.findIndex(sameType), 1);
         } else {
             found.count = total;
         }
     } else {
-        army.units.push(unit);
+        commander.units.push(unit);
     }
 }
 
-// just inverts argument count if necessary and calls addArmyUnit
-function removeArmyUnit(army, unit) {
+// just inverts argument count if necessary and calls addCommanderUnit
+function removeCommanderUnit(commander, unit) {
     const {type, count} = unit;
     const remUnit = count < 0 ? count : 0 - count;
-    addArmyUnit(army, {type, count: remUnit});
+    addCommanderUnit(commander, {type, count: remUnit});
 }
 
-function addArmyItem(army, item) {
-    army.items.push(item);
+function addCommanderItem(commander, item) {
+    commander.items.push(item);
 }
 
-function removeArmyItem(army, item) {
-    const index = army.items.findIndex(e => e == item);
-    if(index >= 0) army.items.splice(index, 1);
+function removeCommanderItem(commander, item) {
+    const index = commander.items.findIndex(e => e == item);
+    if(index >= 0) commander.items.splice(index, 1);
 }
-
 
 module.exports = {
     blankArmy,
@@ -135,8 +149,8 @@ module.exports = {
     setArmyNation,
     addArmyCommander,
     removeArmyCommander,
-    addArmyUnit,
-    removeArmyUnit,
-    addArmyItem,
-    removeArmyItem
+    addCommanderUnit,
+    removeCommanderUnit,
+    addCommanderItem,
+    removeCommanderItem
 };
