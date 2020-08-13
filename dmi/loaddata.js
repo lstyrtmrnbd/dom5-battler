@@ -1,12 +1,12 @@
 const fs = require('fs');
 
-function loadData() {
+const DATALOCS_EXAMPLE = {
+    nation: 'gamedata/nations.csv',
+    unit: 'gamedata/BaseU.csv',
+    item: 'gamedata/BaseI.csv'
+};
 
-    const dataLocs = {
-        nation: 'gamedata/nations.csv',
-        unit: 'gamedata/BaseU.csv',
-        item: 'gamedata/BaseI.csv'
-    };
+function loadDataSync(dataLocs) {
 
     const output = {};
     
@@ -65,4 +65,4 @@ function createLookup(t, k1, k2) {
     return lookup;
 }
 
-module.exports = loadData;
+module.exports = {loadDataSync};
