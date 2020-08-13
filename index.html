@@ -10,29 +10,15 @@
   </head>
   <body>
     <h1>Dominions 5 Battler</h1>
-
+    
     <div class="left-half">
       <article>
 
         <h1>ARMY 1</h1>
 
-        <select name="comm1" id="comm1">
-          <!-- these need to be generated from data-->
-          <option value="Commander">Commander</option>
-          <option value="Dryad">Dryad</option>
-          <option value="Mounted Commander">Mounted Commander</option>
-          <option value="Priest">Priest</option>
-        </select>
+        <input type="text" name="comm1" list="commList">
         <button type="button">Add Commander</button> 
-
-        
-        <select name="units1" id="units1">
-          <!-- these need to be generated from data-->
-          <option value="Heavy Infantry">Heavy Infantry</option>
-          <option value="Longbowman">Longbowman</option>
-          <option value="Heavy Cavalry">Heavy Cavalry</option>
-          <option value="Archer">Archer</option>
-        </select>
+        <input type="text" name="unit1" list="unitList">
         <button type="button">Add Unit</button> 
 
       </article>
@@ -42,27 +28,30 @@
         
         <h1>ARMY 2</h1>
 
-        <select name="comm2" id="comm2">
-          <!-- these need to be generated from data-->
-          <option value="Commander">Commander</option>
-          <option value="Dryad">Dryad</option>
-          <option value="Mounted Commander">Mounted Commander</option>
-          <option value="Priest">Priest</option>
-        </select>
+        <input type="text" name="comm2" list="commList">
         <button type="button">Add Commander</button> 
-
-
-        <select name="units2" id="units2">
-          <!-- these need to be generated from data-->
-          <option value="Heavy Infantry">Heavy Infantry</option>
-          <option value="Longbowman">Longbowman</option>
-          <option value="Heavy Cavalry">Heavy Cavalry</option>
-          <option value="Archer">Archer</option>
-        </select>
+        <input type="text" name="unit2" list="unitList">
         <button type="button">Add Unit</button> 
 
     </div>
     </article>
+
+    <datalist id="commList">
+      <!-- these need to be generated from data-->
+      <option value="Commander">Commander</option>
+      <option value="Dryad">Dryad</option>
+      <option value="Mounted Commander">Mounted Commander</option>
+      <option value="Priest">Priest</option>
+    </datalist>
+
+    <datalist id="unitList">
+      <!-- these need to be generated from data-->
+      <option value="Heavy Infantry">Heavy Infantry</option>
+      <option value="Longbowman">Longbowman</option>
+      <option value="Heavy Cavalry">Heavy Cavalry</option>
+      <option value="Archer">Archer</option>
+    </datalist>
+    
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
   </body>

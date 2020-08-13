@@ -26,7 +26,7 @@ function writeOut(army1, army2) {
 
     const filename = name + '.map';
 
-    fs.writeFileSync(`${process.cwd()}/` + filename, outString);
+    fs.writeFileSync(`${process.cwd()}/battler/` + filename, outString);
     fs.writeFileSync(DOM5_DIR + 'maps/battler/' + filename, outString);
 }
 
