@@ -17,9 +17,12 @@
         <h1>ARMY 1</h1>
 
         <input type="text" name="comm1" list="cmdrList">
-        <button type="button">Add Commander</button> 
+        <button type="button">Add Commander</button>
+
         <input type="text" name="unit1" list="unitList">
         <button type="button">Add Unit</button> 
+        <input type="number" name="unit1Count">
+
 
       </article>
     </div>
@@ -29,16 +32,17 @@
         <h1>ARMY 2</h1>
 
         <input type="text" name="comm2" list="cmdrList">
-        <button type="button">Add Commander</button> 
+        <button type="button">Add Commander</button>
+
         <input type="text" name="unit2" list="unitList">
         <button type="button">Add Unit</button> 
-
+        <input type="number" name="unit2Count">
     </div>
     </article>
 
     <datalist id="cmdrList">
       <!-- these need to be generated from data
-      <option value="Commander">Commander</option>
+           <option value="Commander">Commander</option>
       <option value="Dryad">Dryad</option>
       <option value="Mounted Commander">Mounted Commander</option>
       <option value="Priest">Priest</option>
@@ -47,7 +51,7 @@
 
     <datalist id="unitList">
       <!-- these need to be generated from data
-      <option value="Heavy Infantry">Heavy Infantry</option>
+           <option value="Heavy Infantry">Heavy Infantry</option>
       <option value="Longbowman">Longbowman</option>
       <option value="Heavy Cavalry">Heavy Cavalry</option>
       <option value="Archer">Archer</option>

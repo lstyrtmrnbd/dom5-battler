@@ -5,8 +5,8 @@ const {newArmy,writeOut} = require('./src/battler');
 
 const ARMY1 = {};
 
-const mappedUnitToOption = (mappedUnit) => {
-    const {id, name} = mappedUnit;
+const unitToOption = (unit) => {
+    const {id, name} = unit;
     return `<option value="${id}">${name}</option>`;
 };
 
@@ -15,7 +15,7 @@ function addData(data) {
     let unitHTML = '';
     
     Object.keys(data.units).forEach(key => {
-        unitHTML += mappedUnitToOption(data.units[key]);
+        unitHTML += unitToOption(data.units[key]);
     });
 
     unitList.innerHTML = unitHTML;
@@ -23,7 +23,7 @@ function addData(data) {
     let cmdrHTML = '';
     
     Object.keys(data.cmdrs).forEach(key => {
-        cmdrHTML += mappedUnitToOption(data.cmdrs[key]);
+        cmdrHTML += unitToOption(data.cmdrs[key]);
     });
 
     cmdrList.innerHTML = cmdrHTML;
