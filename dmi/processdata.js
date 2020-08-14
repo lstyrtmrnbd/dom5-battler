@@ -1,4 +1,13 @@
 
+function scrapeAllData(DMI) {
+
+    return {
+        units: scrapeUnitData(DMI.modctx.unitlookup),
+        nations: scrapeNationData(DMI.modctx.nationlookup),
+        items: scrapeItemData(DMI.modctx.itemlookup)
+    };
+}
+
 function scrapeUnitData(unitlookup) {
 
     function isCmdr(u) {
@@ -26,5 +35,20 @@ function scrapeUnitData(unitlookup) {
 }
 
 function scrapeNationData(nationlookup) {
+
+    const output = {};
     
+    Object.keys(nationlookup).forEach(key => {
+        const n = nationlookup[key];
+        output[key] = {
+            id: n.id,
+            name: n.shortname
+        };
+    });
+
+    return output;
+}
+
+function scrapeItemData(itemlookup) {
+    return Object.keys(itemlookup).map(k => itemlookup[k].name);
 }
