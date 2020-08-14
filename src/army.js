@@ -1,11 +1,12 @@
 const uuid = require('uuid').v4;
 
+//
+///
 //// Structure Examples
+///
+//
 
-const UNIT_EXAMPLE = {
-    type: 66,
-    count: 77
-};
+const UNIT_EXAMPLE = { type: 66, count: 77};
 
 const COMMANDER_EXAMPLE = {
     type: 238, // Pan
@@ -23,13 +24,25 @@ const COMMANDER_EXAMPLE = {
         B:0
     }
 };
+//^^^^^^  Equivalent to  vvvvvvvvvv
+const commander = newCommander(238);
+commander.addUnit({type:66, count:10});
+commander.addItem("Vine Shield");
+commander.addItem("Frostbrand");
 
 const ARMY_EXAMPLE = {
     nation: 'nat_id',
     commanders: [COMMANDER_EXAMPLE]
 };
+//^^^^^^  Equivalent to  vvvvvvvvvv
+const army = newArmy(58);
+army.addCommander(commander);
 
-//// Primary functionality
+//
+///
+//// Primary Functionality
+///
+//
 
 // creates essential Army structure, defaults to Archo
 function blankArmy(nation = 5) {
@@ -97,7 +110,11 @@ function newCommander(type = 238) {
     };
 }
 
-//// Implementation and raw fns
+//
+///
+//// Implementation and Raw Fns
+///
+//
 
 function newMagic() {
     return {
@@ -173,5 +190,6 @@ module.exports = {
     addCommanderUnit,
     removeCommanderUnit,
     addCommanderItem,
-    removeCommanderItem
+    removeCommanderItem,
+    example: {army, commander}
 };
