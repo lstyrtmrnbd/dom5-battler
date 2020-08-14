@@ -1,3 +1,8 @@
+/**
+ * This is the initial data implementation, mostly cribbed from the DMI
+ *   it has been abandoned in favor of the scraping approach found in processdata.js
+ */
+
 const fs = require('fs');
 
 const DATALOCS_EXAMPLE = {
@@ -14,6 +19,7 @@ function loadDataSync(dataLocs) {
         const data = fs.readFileSync(dataLocs[key], {encoding:'utf8'});
         const parsed = parseTextToTable(data);
         const name = key === 'nation' ? 'nationname' : 'name';
+        output[key + 'data'] = parsed;
         output[key] = createLookup(parsed, 'id', name);
     });
 
@@ -46,6 +52,13 @@ function parseTextToTable(str) {
     return t;
 }
 
+function isCmdr(u) {
+    if (u.sorttype) {
+	return u.sorttype.indexOf('cmdr') != -1 && !u.createdby;
+    }
+    return true;
+}
+
 function createLookup(t, k1, k2) {
     var lookup = {};
     for (var i=0; i<t.length; i++) {
@@ -55,12 +68,12 @@ function createLookup(t, k1, k2) {
 	if ((v1= line[k1]) && !lookup[v1])
 	    lookup[v1] = line;
 
-	var v2;
-	if (k2 && (v2= line[k2])) {
-	    v2 = v2.toLowerCase();
-	    if (!lookup[v2])
-		lookup[v2] = line;
-	}
+	// var v2;
+	// if (k2 && (v2= line[k2])) {
+	//     v2 = v2.toLowerCase();
+	//     if (!lookup[v2])
+	// 	lookup[v2] = line;
+	// }
     }
     return lookup;
 }
