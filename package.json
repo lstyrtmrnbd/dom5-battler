@@ -11,7 +11,7 @@
     "battle"
   ],
   "author": "marisa karisame",
-  "license": "MIT",
+  "license": "GPLv3",
   "devDependencies": {
     "electron": "^9.0.0"
   },

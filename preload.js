@@ -1,7 +1,7 @@
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-const {newArmy,writeOut} = require('./battler');
-const {loadDataSync} = require('./dmi/loaddata');
+const fs = require('fs');
+const {newArmy,writeOut} = require('./src/battler');
 
 const ARMY1 = {};
 
@@ -12,37 +12,32 @@ const mappedUnitToOption = (mappedUnit) => {
 
 function addData(data) {
 
-    console.log('Now loading...');
-
-    let outHTML = '';
+    let unitHTML = '';
     
-    Object.keys(data.unit).forEach(key => {
-        outHTML += mappedUnitToOption(data.unit[key]);
+    Object.keys(data.units).forEach(key => {
+        unitHTML += mappedUnitToOption(data.units[key]);
     });
 
-    unitList.innerHTML = outHTML;
+    unitList.innerHTML = unitHTML;
 
-    console.log('Done loading');
+    let cmdrHTML = '';
+    
+    Object.keys(data.cmdrs).forEach(key => {
+        cmdrHTML += mappedUnitToOption(data.cmdrs[key]);
+    });
+
+    cmdrList.innerHTML = cmdrHTML;
 }
-
-const DATALOCS = {
-    nation: 'gamedata/nations.csv',
-    unit: 'gamedata/BaseU.csv',
-    item: 'gamedata/BaseI.csv'
-};
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    // load data
-    //sessionStorage.setItem('data', loadData()); // save in sessionstorage
-    
-    const data = loadDataSync(DATALOCS);
+    const filedata = fs.readFileSync(__dirname + '/gamedata/dmi_data.json', {encoding:'utf8'});
 
+    console.log(filedata);
+
+    const data = JSON.parse(filedata);
+
+    console.log(data);
+    
     addData(data);
-   
-    // Object.keys(data.unit).forEach(key => {
-    //     unitList.innerHTML += mappedUnitToOption(data.unit[key]);
-    // });
-
-    
 });

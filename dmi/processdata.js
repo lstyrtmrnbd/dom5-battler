@@ -8,7 +8,7 @@
 function scrapeAllData(DMI) {
 
     return {
-        units: scrapeUnitData(DMI.modctx.unitlookup),
+        ...scrapeUnitData(DMI.modctx.unitlookup),
         nations: scrapeNationData(DMI.modctx.nationlookup),
         items: scrapeItemData(DMI.modctx.itemlookup)
     };
@@ -23,21 +23,20 @@ function scrapeUnitData(unitlookup) {
         return true;
     }
 
-    const output = {};
+    const units = {};
+    const cmdrs = {};
 
     Object.keys(unitlookup).forEach(key => {
         
         const u = unitlookup[key];
-        if(output[u.id]) return; // no duplicates
+        const {id, name} = u;
         
-        output[key] = {
-            id: u.id,
-            name: u.name,
-            cmdr: isCmdr(u)
-        };
+        if(units[id] || cmdrs[id]) return; // no duplicates
+        
+        isCmdr(u) ? cmdrs[key] = { id, name } : units[key] = { id, name };
     });
 
-    return output;
+    return {units,cmdrs};
 }
 
 function scrapeNationData(nationlookup) {

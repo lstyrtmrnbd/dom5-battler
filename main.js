@@ -3,6 +3,8 @@ const path = require('path');
 
 function createWindow () {
 
+    console.log(__dirname);
+
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -10,7 +12,7 @@ function createWindow () {
             preload: path.join(__dirname, 'preload.js')
         }
     });
-    mainWindow.removeMenu();
+    //mainWindow.removeMenu();
     mainWindow.loadFile('index.html');
 }
 
