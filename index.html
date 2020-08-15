@@ -10,6 +10,8 @@
   </head>
   <body>
     <h1>Dominions 5 Battler</h1>
+
+    <text id="pageLog">Select a Nation</text>
     
     <div class="left-half">
       <article>
@@ -17,16 +19,20 @@
         <h1>ARMY 1</h1>
 
         <input type="text" name="nat2" list="nationList">
+        <text>Nation</text>
         <br>
 
         <input type="text" name="comm1" list="cmdrList">
-        <button type="button">Add Commander</button>
+        <button type="button" id="addCmdr1">Add Commander</button>
 
         <input type="text" name="unit1" list="unitList">
-        <button type="button">Add Unit</button> 
-        <input type="number" name="unit1Count">
+        <button type="button" id="addUnit1">Add Unit</button> 
+        <input type="number" name="unit1Count" value="1">
+        <text>Unit Count</text>
 
-
+        <ul id="army1Display">
+        </ul>
+        
       </article>
     </div>
     <div class="right-half">
@@ -35,21 +41,25 @@
         <h1>ARMY 2</h1>
         
         <input type="text" name="nat2" list="nationList">
+        <text>Nation</text>
         <br>
 
         <input type="text" name="comm2" list="cmdrList">
-        <button type="button">Add Commander</button>
+        <button type="button" id="addCmdr2">Add Commander</button>
 
         <input type="text" name="unit2" list="unitList">
-        <button type="button">Add Unit</button> 
-        <input type="number" name="unit2Count">
+        <button type="button" id="addUnit2">Add Unit</button>
+        <input type="number" name="unit2Count" value="1">
+        <text>Unit Count</text>
 
+        <ul id="army2Display">
+        </ul>
         
     </div>
     </article>
 
     <!-- Data is embedded in the tags below through an event listener
-      installed by the preload process -->
+         installed by the preload process -->
 
     <datalist id="cmdrList">
     </datalist>

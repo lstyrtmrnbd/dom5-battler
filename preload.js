@@ -6,6 +6,12 @@ const {writeOut} = require('./src/battler');
 const ARMY1 = newArmy(50);
 const ARMY2 = newArmy(58);
 
+const dmiData = (() => {
+    const filedata = fs.readFileSync(__dirname + '/gamedata/dmi_data.json', {encoding:'utf8'});
+    return JSON.parse(filedata);
+})();
+
+
 const unitToOption = (unit) => {
     const {id, name} = unit;
     return `<option value="${id}">${name}</option>`;
@@ -13,7 +19,7 @@ const unitToOption = (unit) => {
 
 const itemToOption = (item) => {
     return `<option>${item}</option>"`;
-}
+};
 
 function addDmiData(data) {
 
@@ -44,7 +50,7 @@ function addDmiData(data) {
     let itemHTML = '';
     
     data.items.forEach(item => {
-        itemHTML += unitToOption(data.items[item]);
+        itemHTML += itemToOption(data.items[item]);
     });
 
     itemList.innerHTML = itemHTML;
@@ -53,9 +59,46 @@ function addDmiData(data) {
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', () => {
-
-    const filedata = fs.readFileSync(__dirname + '/gamedata/dmi_data.json', {encoding:'utf8'});
-    const dmiData = JSON.parse(filedata);
     
     addDmiData(dmiData);
+
+    loadEventListeners();
 });
+
+function loadEventListeners() {
+    addCmdr1.addEventListener('click', addCmdrCallback);
+    addCmdr2.addEventListener('click', addCmdrCallback);
+
+    addUnit1.addEventListener('click', callbackForUnitList('unit1'));
+    addUnit2.addEventListener('click', callbackForUnitList('unit2'));
+}
+
+function addCmdrCallback(event) {
+    pageLog.innerText = "Added commander";
+}
+
+function callbackForUnitList(listName) {
+
+    return (event) => {
+        const unitValue = document.getElementsByName(listName)[0].value;
+        const unit = dmiData.units[unitValue];
+        pageLog.innerText = `Added ${unit.name} to (?)army`;
+    };
+}
+
+function renderArmyHTMLs(army, armyDisplayId) {
+    armyDisplayId.innerHTML = armyToHMTL(army);
+}
+
+function armyToHMTL(army) {
+
+    const li = (uuid, text) => {
+        return `<li id=${uuid}>${text}</li>`;
+    };
+
+    const cmdrElts = army.commanders
+          .map(cmdr => li(cmdr.id, cmdr.name))
+          .reduce((a,c) => a.concat(c), '');
+
+    return cmdrElts;
+}
