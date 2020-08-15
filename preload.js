@@ -4,7 +4,9 @@ const {newArmy,example} = require('./src/army');
 const {writeOut} = require('./src/battler');
 
 const ARMY1 = newArmy(50);
+ARMY1.name = 'Army 1';
 const ARMY2 = newArmy(58);
+ARMY2.name = 'Army 2';
 
 const dmiData = (() => {
     const filedata = fs.readFileSync(__dirname + '/gamedata/dmi_data.json', {encoding:'utf8'});
@@ -69,20 +71,24 @@ function loadEventListeners() {
     addCmdr1.addEventListener('click', addCmdrCallback);
     addCmdr2.addEventListener('click', addCmdrCallback);
 
-    addUnit1.addEventListener('click', callbackForUnitList('unit1'));
-    addUnit2.addEventListener('click', callbackForUnitList('unit2'));
+    addUnit1.addEventListener('click', callbackForUnitList('unit1', 'unit1Count', ARMY1));
+    addUnit2.addEventListener('click', callbackForUnitList('unit2', 'unit2Count', ARMY2));
 }
 
 function addCmdrCallback(event) {
     pageLog.innerText = "Added commander";
 }
 
-function callbackForUnitList(listName) {
+function callbackForUnitList(listName, countName, army) {
 
     return (event) => {
         const unitValue = document.getElementsByName(listName)[0].value;
         const unit = dmiData.units[unitValue];
-        pageLog.innerText = `Added ${unit.name} to (?)army`;
+        const unitCount = document.getElementsByName(countName)[0].value;
+
+        // currentCommander1.addUnit({type: unit.id, count: unitCount});
+        
+        pageLog.innerText = `Added ${unit.name} to ${army.name}`;
     };
 }
 
