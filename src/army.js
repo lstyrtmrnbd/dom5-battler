@@ -71,6 +71,7 @@ function newArmy(nation = 5) {
     return {
         nation,
         commanders: [],
+        currentCommander: null,
 
         setNation,
         addCommander,
@@ -183,6 +184,7 @@ function removeCommanderItem(commander, item) {
 module.exports = {
     blankArmy,
     newArmy,
+    newCommander,
     setArmyNation,
     addArmyCommander,
     addArmyCommanderByType,

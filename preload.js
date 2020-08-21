@@ -1,12 +1,15 @@
 const fs = require('fs');
 
-const {newArmy,example} = require('./src/army');
+const {newArmy, newCommander, example} = require('./src/army');
 const {writeOut} = require('./src/battler');
 
 const ARMY1 = newArmy(50);
 ARMY1.name = 'Army 1';
+ARMY1.displayId = 'army1Display';
+
 const ARMY2 = newArmy(58);
 ARMY2.name = 'Army 2';
+ARMY2.displayId = 'army2Display';
 
 const dmiData = (() => {
     const filedata = fs.readFileSync(__dirname + '/gamedata/dmi_data.json', {encoding:'utf8'});
@@ -68,32 +71,51 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadEventListeners() {
-    addCmdr1.addEventListener('click', addCmdrCallback);
-    addCmdr2.addEventListener('click', addCmdrCallback);
+    addCmdr1.addEventListener('click', callbackForCmdrList('comm1', ARMY1));
+    addCmdr2.addEventListener('click', callbackForCmdrList('comm2', ARMY2));
 
     addUnit1.addEventListener('click', callbackForUnitList('unit1', 'unit1Count', ARMY1));
     addUnit2.addEventListener('click', callbackForUnitList('unit2', 'unit2Count', ARMY2));
 }
 
-function addCmdrCallback(event) {
-    pageLog.innerText = "Added commander";
+function callbackForCmdrList(listName, army) {
+
+    return (event) => {
+        const cmdrValue = document.getElementsByName(listName)[0].value;
+        const {name} = dmiData.cmdrs[cmdrValue];
+
+        const cmdr = newCommander(cmdrValue);
+        
+        army.addCommander(cmdr);
+        army.currentCommander = cmdr.id;
+
+        // rerender army list
+        renderArmyHTMLs(army, army.displayId);
+        
+        pageLog.innerText = `Added ${name} to ${army.name}`;
+    };
 }
 
 function callbackForUnitList(listName, countName, army) {
 
     return (event) => {
         const unitValue = document.getElementsByName(listName)[0].value;
-        const unit = dmiData.units[unitValue];
         const unitCount = document.getElementsByName(countName)[0].value;
 
-        // currentCommander1.addUnit({type: unit.id, count: unitCount});
+        const {id, name} = dmiData.units[unitValue];
         
-        pageLog.innerText = `Added ${unit.name} to ${army.name}`;
+        // add unit
+        // currentCommander1.addUnit({type: unit.id, count: unitCount});
+
+        // rerender army list
+        renderArmyHTMLs(army, army.displayId);
+        
+        pageLog.innerText = `Added ${unitCount} ${name} to ${army.name}`;
     };
 }
 
 function renderArmyHTMLs(army, armyDisplayId) {
-    armyDisplayId.innerHTML = armyToHMTL(army);
+    document.getElementById(armyDisplayId).innerHTML = armyToHMTL(army);
 }
 
 function armyToHMTL(army) {
