@@ -16,49 +16,31 @@ const dmiData = (() => {
     return JSON.parse(filedata);
 })();
 
-
-const unitToOption = (unit) => {
-    const {id, name} = unit;
-    return `<option value="${id}">${name}</option>`;
-};
-
-const itemToOption = (item) => {
-    return `<option>${item}</option>"`;
-};
-
 function addDmiData(data) {
 
-    let unitHTML = '';
+    const concat = (a,c) => a.concat(c);
+
+    const unitToOption = (unit) => {
+        const {id, name} = unit;
+        return `<option value="${id}">${name}</option>`;
+    };
     
-    Object.keys(data.units).forEach(key => {
-        unitHTML += unitToOption(data.units[key]);
+    ['units', 'cmdrs', 'nations'].forEach(name => {
+
+        const listNode = document.getElementById(name + 'List');
+
+        listNode.innerHTML = Object.keys(data[name])
+            .map(key => unitToOption(data[name][key]))
+            .reduce(concat);
     });
 
-    unitList.innerHTML = unitHTML;
-
-    let cmdrHTML = '';
+    const itemToOption = (item) => {
+        return `<option>${item}</option>`;
+    };
     
-    Object.keys(data.cmdrs).forEach(key => {
-        cmdrHTML += unitToOption(data.cmdrs[key]);
-    });
-
-    cmdrList.innerHTML = cmdrHTML;
-
-    let nationHTML = '';
-    
-    Object.keys(data.nations).forEach(key => {
-        nationHTML += unitToOption(data.nations[key]);
-    });
-
-    nationList.innerHTML = nationHTML;
-
-    let itemHTML = '';
-    
-    data.items.forEach(item => {
-        itemHTML += itemToOption(data.items[item]);
-    });
-
-    itemList.innerHTML = itemHTML;
+    itemsList.innerHTML = data.items
+        .map(item => itemToOption(item))
+        .reduce(concat);
 }
 
 // All of the Node.js APIs are available in the preload process.
