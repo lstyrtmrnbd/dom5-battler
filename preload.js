@@ -4,6 +4,7 @@ const {newArmy, newCommander, example} = require('./src/army');
 const {writeOut} = require('./src/battler');
 
 const DATA_FILE = `${__dirname}/gamedata/dmi_data.json`;
+const LOG_ID =  'pageLog';
 
 /**
  *  Immediately executed initializer prepares all dynamic data
@@ -42,6 +43,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
 const concat = (a,c) => a.concat(c);
 
+const logWriter = (logId) => (message) => {
+    document.getElementById(logId).innerText = message;
+};
+
 function fillSelectionLists(data) {
 
     const unitToOption = (unit) => {
@@ -67,11 +72,6 @@ function fillSelectionLists(data) {
         .reduce(concat);
 }
 
-
-// All of the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
-
-
 function loadEventListeners() {
 
     const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
@@ -95,6 +95,8 @@ function loadEventListeners() {
 
 function generateCmdrListCallback(listName, army) {
 
+    const writeLog = logWriter(LOG_ID);
+    
     return (event) => {
         const cmdrValue = document.getElementsByName(listName)[0].value;
         const {name} = window.DMI_DATA.cmdrs[cmdrValue];
@@ -107,12 +109,14 @@ function generateCmdrListCallback(listName, army) {
         // rerender army list
         renderArmyHTMLs(army, army.displayId);
         
-        pageLog.innerText = `Added ${name} to ${army.name}`;
+        writeLog(`Added ${name} to ${army.name}`);
     };
 };
 
 function generateUnitListCallback(listName, countName, army) {
 
+    const writeLog = logWriter(LOG_ID);
+        
     return (event) => {
         const unitValue = document.getElementsByName(listName)[0].value;
         const unitCount = document.getElementsByName(countName)[0].value;
@@ -125,9 +129,11 @@ function generateUnitListCallback(listName, countName, army) {
         // rerender army list
         renderArmyHTMLs(army, army.displayId);
         
-        pageLog.innerText = `Added ${unitCount} ${name} to ${army.name}`;
+        writeLog(`Added ${unitCount} ${name} to ${army.name}`);
     };
 };
+
+
 
 function renderArmyHTMLs(army, armyDisplayId) {
     document.getElementById(armyDisplayId).innerHTML = armyToHMTL(army);
