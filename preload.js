@@ -3,22 +3,46 @@ const fs = require('fs');
 const {newArmy, newCommander, example} = require('./src/army');
 const {writeOut} = require('./src/battler');
 
-const ARMY1 = newArmy(50);
-ARMY1.name = 'Army 1';
-ARMY1.displayId = 'army1Display';
+const DATA_FILE = `${__dirname}/gamedata/dmi_data.json`;
 
-const ARMY2 = newArmy(58);
-ARMY2.name = 'Army 2';
-ARMY2.displayId = 'army2Display';
+/**
+ *  Immediately executed initializer prepares all dynamic data
+ */
+(function initialize() {
+    window.ARMY1 = newArmy(50);
+    window.ARMY1.name = 'Army 1';
+    window.ARMY1.displayId = 'army1Display';
 
-const dmiData = (() => {
-    const filedata = fs.readFileSync(__dirname + '/gamedata/dmi_data.json', {encoding:'utf8'});
-    return JSON.parse(filedata);
+    window.ARMY2 = newArmy(58);
+    window.ARMY2.name = 'Army 2';
+    window.ARMY2.displayId = 'army2Display';
+
+    window.DMI_DATA = JSON.parse(fs.readFileSync(DATA_FILE,
+                                                 {encoding:'utf8'}));
+
+    window.generateCmdrListCallback = generateCmdrListCallback;
+    window.generateUnitListCallback = generateUnitListCallback;
 })();
 
-function addDmiData(data) {
+/**
+ *  Occurs in the context of the loaded page, 
+ *    applies the data and functionality to the app
+ */
+window.addEventListener('DOMContentLoaded', () => {
 
-    const concat = (a,c) => a.concat(c);
+    // populate lists of data
+    fillSelectionLists(window.DMI_DATA);
+    // add button callbacks
+    loadEventListeners();
+});
+
+/**
+ *  Implementations and utility
+ */
+
+const concat = (a,c) => a.concat(c);
+
+function fillSelectionLists(data) {
 
     const unitToOption = (unit) => {
         const {id, name} = unit;
@@ -38,33 +62,42 @@ function addDmiData(data) {
         return `<option>${item}</option>`;
     };
     
-    itemsList.innerHTML = data.items
+    document.getElementById('itemsList').innerHTML = data.items
         .map(item => itemToOption(item))
         .reduce(concat);
 }
 
+
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-window.addEventListener('DOMContentLoaded', () => {
-    
-    addDmiData(dmiData);
 
-    loadEventListeners();
-});
 
 function loadEventListeners() {
-    addCmdr1.addEventListener('click', callbackForCmdrList('comm1', ARMY1));
-    addCmdr2.addEventListener('click', callbackForCmdrList('comm2', ARMY2));
 
-    addUnit1.addEventListener('click', callbackForUnitList('unit1', 'unit1Count', ARMY1));
-    addUnit2.addEventListener('click', callbackForUnitList('unit2', 'unit2Count', ARMY2));
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+    
+    const callSpecs = [1,2].map(num => ['unit', 'cmdr'].map(name => {
+        return {
+            node: document.getElementById(`add${capitalize(name) + num}`),
+            callbackGenName: `generate${capitalize(name)}ListCallback`,
+            callbackParams: name === 'cmdr' ?
+                [`${name + num}`, window[`ARMY${num}`]] :
+                [`${name + num}`, `${name + num}Count`, window[`ARMY${num}`]]
+        };
+    })).reduce(concat);
+
+    callSpecs.forEach(callSpec => {
+        const {node, callbackGenName, callbackParams} = callSpec;
+        const callback = window[callbackGenName].apply(null, callbackParams);
+        node.addEventListener('click', callback); // the lone side effect
+    });
 }
 
-function callbackForCmdrList(listName, army) {
+function generateCmdrListCallback(listName, army) {
 
     return (event) => {
         const cmdrValue = document.getElementsByName(listName)[0].value;
-        const {name} = dmiData.cmdrs[cmdrValue];
+        const {name} = window.DMI_DATA.cmdrs[cmdrValue];
 
         const cmdr = newCommander(cmdrValue);
         
@@ -76,15 +109,15 @@ function callbackForCmdrList(listName, army) {
         
         pageLog.innerText = `Added ${name} to ${army.name}`;
     };
-}
+};
 
-function callbackForUnitList(listName, countName, army) {
+function generateUnitListCallback(listName, countName, army) {
 
     return (event) => {
         const unitValue = document.getElementsByName(listName)[0].value;
         const unitCount = document.getElementsByName(countName)[0].value;
 
-        const {id, name} = dmiData.units[unitValue];
+        const {id, name} = window.DMI_DATA.units[unitValue];
         
         // add unit
         // currentCommander1.addUnit({type: unit.id, count: unitCount});
@@ -94,7 +127,7 @@ function callbackForUnitList(listName, countName, army) {
         
         pageLog.innerText = `Added ${unitCount} ${name} to ${army.name}`;
     };
-}
+};
 
 function renderArmyHTMLs(army, armyDisplayId) {
     document.getElementById(armyDisplayId).innerHTML = armyToHMTL(army);
