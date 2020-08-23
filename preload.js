@@ -9,7 +9,7 @@ const LOG_ID =  'pageLog';
 /**
  *  Immediately executed initializer prepares all dynamic data
  */
-(function initialize() {
+(() => {
     window.ARMY1 = newArmy(50);
     window.ARMY1.name = 'Army 1';
     window.ARMY1.displayId = 'army1Display';
@@ -76,15 +76,13 @@ function loadEventListeners() {
 
     const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
     
-    const callSpecs = [1,2].map(num => ['unit', 'cmdr'].map(name => {
-        return {
+    const callSpecs = [1,2].map(num => ['unit', 'cmdr'].map(name => ({
             node: document.getElementById(`add${capitalize(name) + num}`),
             callbackGenName: `generate${capitalize(name)}ListCallback`,
             callbackParams: name === 'cmdr' ?
                 [`${name + num}`, window[`ARMY${num}`]] :
                 [`${name + num}`, `${name + num}Count`, window[`ARMY${num}`]]
-        };
-    })).reduce(concat);
+    }))).reduce(concat);
 
     callSpecs.forEach(callSpec => {
         const {node, callbackGenName, callbackParams} = callSpec;

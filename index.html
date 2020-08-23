@@ -11,53 +11,72 @@
   <body>
     <h1>Dominions 5 Battler</h1>
 
+    <div id="pageLogContainer">
     <text id="pageLog">Select a Nation</text>
+    </div>
     
-    <div class="left-half">
-      <article>
+    <div>
+      <div class="left-half">
 
-        <h1>ARMY 1</h1>
 
-        <input type="text" name="nat2" list="nationsList">
-        <text>Nation</text>
-        <br>
+        <article>
 
-        <input type="text" name="cmdr1" list="cmdrsList">
-        <button type="button" id="addCmdr1">Add Commander</button>
 
-        <input type="text" name="unit1" list="unitsList">
-        <button type="button" id="addUnit1">Add Unit</button> 
-        <input type="number" name="unit1Count" value="1">
-        <text>Unit Count</text>
 
-        <ul id="army1Display">
-        </ul>
-        
-      </article>
+          <h1>ARMY 1</h1>
 
+                  <ul class="scrollbox" id="army1Display">
+            <li>hi</li>
+          </ul>
+
+          <input type="text" name="nat2" list="nationsList">
+          <text>Nation</text>
+          <br>
+
+          <input type="text" name="cmdr1" list="cmdrsList">
+          <button type="button" id="addCmdr1">Add Commander</button>
+
+          <input type="text" name="unit1" list="unitsList">
+          <button type="button" id="addUnit1">Add Unit</button> 
+          <input type="number" name="unit1Count" value="1">
+          <text>Unit Count</text>
+
+          
+          
+        </article>
+
+      </div>
+      
+      <div class="right-half">
+        <article>
+          
+          <h1>ARMY 2</h1>
+
+          <ul class="scrollbox" id="army2Display">
+            <li>yo</li>
+          </ul>
+          
+          <input type="text" name="nat2" list="nationsList">
+          <text>Nation</text>
+          <br>
+
+          <input type="text" name="cmdr2" list="cmdrsList">
+          <button type="button" id="addCmdr2">Add Commander</button>
+
+          <input type="text" name="unit2" list="unitsList">
+          <button type="button" id="addUnit2">Add Unit</button>
+          <input type="number" name="unit2Count" value="1">
+          <text>Unit Count</text>
+
+          
+          
+          
+        </article>
+      </div>
     </div>
-    <div class="right-half">
-      <article>
-        
-        <h1>ARMY 2</h1>
-        
-        <input type="text" name="nat2" list="nationsList">
-        <text>Nation</text>
-        <br>
-
-        <input type="text" name="cmdr2" list="cmdrsList">
-        <button type="button" id="addCmdr2">Add Commander</button>
-
-        <input type="text" name="unit2" list="unitsList">
-        <button type="button" id="addUnit2">Add Unit</button>
-        <input type="number" name="unit2Count" value="1">
-        <text>Unit Count</text>
-
-        <ul id="army2Display">
-        </ul>
-        
-    </div>
-    </article>
+    
+    
+    
 
     <!-- Data is embedded in the tags below through an event listener
          installed by the preload process -->
