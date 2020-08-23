@@ -21,8 +21,11 @@ const LOG_ID =  'pageLog';
     window.DMI_DATA = JSON.parse(fs.readFileSync(DATA_FILE,
                                                  {encoding:'utf8'}));
 
+    window.getUnitName = unitNameGetter(window.DMI_DATA);
+    
     window.generateCmdrListCallback = generateCmdrListCallback;
     window.generateUnitListCallback = generateUnitListCallback;
+
 })();
 
 /**
@@ -46,6 +49,10 @@ const concat = (a,c) => a.concat(c);
 const logWriter = (logId) => (message) => {
     document.getElementById(logId).innerText = message;
 };
+
+function unitNameGetter(data) {
+    return (type) => data.units[type] && data.units[type].name || '';
+}
 
 function fillSelectionLists(data) {
 
@@ -144,12 +151,23 @@ function renderArmyHTMLs(army, armyDisplayId) {
 
 function armyToHMTL(army) {
 
-    const li = (uuid, text) => {
-        return `<li id=${uuid}>${text}</li>`;
+    const li = (inset, attr) => {
+        return `<li${attr ? attr : ''}>${inset}</li>`;
+    };
+
+    const renderUnits = (units) => {
+        const unitLi = (unit) => `${unit.count} ${window.getUnitName(unit.type)}`;
+        const unitList = units.map(u => li(unitLi(u), ` value="${u.type}"`))
+              .reduce(concat, '');
+        return `<ul>${unitList}</ul>`;
+    };
+    
+    const renderCommander = (cmdr) => {
+        return li(cmdr.name + renderUnits(cmdr.units), ` id="${cmdr.id}"`);
     };
 
     const cmdrElts = army.commanders
-          .map(cmdr => li(cmdr.id, cmdr.name))
+          .map(cmdr => renderCommander(cmdr))
           .reduce((a,c) => a.concat(c), '');
 
     return cmdrElts;

@@ -172,7 +172,7 @@ function addCommanderUnit(commander, unit) {
     const found = commander.units.find(sameType);
     
     if(found){
-        const total = found.count + unit.count;
+        const total = parseInt(found.count) + parseInt(unit.count);
 
         if(total <= 0) {
             commander.units.splice(commander.units.findIndex(sameType), 1);
