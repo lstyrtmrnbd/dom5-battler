@@ -99,7 +99,7 @@ function generateCmdrListCallback(listName, army) {
         const cmdrValue = document.getElementsByName(listName)[0].value;
         const {name} = window.DMI_DATA.cmdrs[cmdrValue];
 
-        const cmdr = newCommander(cmdrValue);
+        const cmdr = newCommander(cmdrValue, name);
         
         army.addCommander(cmdr);
         army.currentCommander = cmdr.id;
@@ -120,14 +120,19 @@ function generateUnitListCallback(listName, countName, army) {
         const unitCount = document.getElementsByName(countName)[0].value;
 
         const {id, name} = window.DMI_DATA.units[unitValue];
-        
-        // add unit
-        // currentCommander1.addUnit({type: unit.id, count: unitCount});
 
+        const current = army.getCurrentCommander();
+        // add unit
+        if(current) {
+            
+            current.addUnit({type: id, count: unitCount});
+            writeLog(`Added ${unitCount} ${name} to ${current.name} of ${army.name}`);
+        } else {
+            writeLog(`${army.name} has no commander selected, please add a commander`);
+        }
+        
         // rerender army list
         renderArmyHTMLs(army, army.displayId);
-        
-        writeLog(`Added ${unitCount} ${name} to ${army.name}`);
     };
 };
 

@@ -67,6 +67,14 @@ function newArmy(nation = 5) {
     function removeCommander(commander) {
         removeArmyCommander(this, commander);
     }
+
+    function setCurrentCommander(id) {
+        setArmyCurrentCommander(this, id);
+    }
+
+    function getCurrentCommander(id) {
+        return getArmyCurrentCommander(this);
+    }
     
     return {
         nation,
@@ -75,11 +83,13 @@ function newArmy(nation = 5) {
 
         setNation,
         addCommander,
-        removeCommander
+        removeCommander,
+        setCurrentCommander,
+        getCurrentCommander
     };
 }
 
-function newCommander(type = 238) {
+function newCommander(type = 238, name = 'Pan') {
 
     function addUnit(unit) {
         addCommanderUnit(this, unit);
@@ -100,6 +110,7 @@ function newCommander(type = 238) {
     return {
         id: uuid(),
         type,
+        name,
         units: [],
         items: [],
         magic: newMagic(),
@@ -145,6 +156,14 @@ function addArmyCommanderByType(army, type) {
 function removeArmyCommander(army, id) {
     const index = army.commanders.findIndex(c => c.id === id);
     if(index >= 0) army.commanders.splice(index, 1);
+}
+
+function setArmyCurrentCommander(army, id) {
+    army.currentCommander = army.commanders.find(c => c.id === id);
+}
+
+function getArmyCurrentCommander(army) {
+    return army.commanders.find(c => c.id === army.currentCommander);
 }
 
 function addCommanderUnit(commander, unit) {
